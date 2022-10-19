@@ -1,0 +1,220 @@
+-- CRIANDO A DATABASE LABSCHOOL
+CREATE DATABASE labschool;
+
+-- CRIANDO A SCHEMA LABSCHOOL
+CREATE SCHEMA labschool;
+
+-- CRIAÇÃO DAS TABELAS
+-- CRIANDO A TABELA DE ENDEREÇOS
+CREATE TABLE labschool.endereco(
+id SERIAL PRIMARY KEY NOT NULL,
+cep VARCHAR(10) NOT NULL,
+logradouro VARCHAR(100) NOT NULL,
+numero INTEGER NOT NULL,
+complemento VARCHAR(120),
+bairro VARCHAR(64) NOT NULL,
+cidade VARCHAR(64) NOT NULL,
+uf VARCHAR(2) NOT NULL
+);
+
+-- CRIANDO A TABELA DE ALUNOS
+CREATE TABLE labschool.aluno(
+id SERIAL PRIMARY KEY UNIQUE NOT NULL,
+id_endereco INTEGER REFERENCES labschool.endereco(id) NOT NULL,
+nome_completo VARCHAR(64) NOT NULL,
+cpf VARCHAR(15) NOT NULL UNIQUE,
+data_nasc DATE NOT NULL,
+telefone VARCHAR(15),
+status_matricula VARCHAR NOT NULL,
+nota_selecao NUMERIC NOT NULL
+);
+
+-- CRIANDO A TABELA DE PROFESSORES
+CREATE TABLE labschool.professor(
+id SERIAL PRIMARY KEY UNIQUE NOT NULL,
+id_endereco INTEGER REFERENCES labschool.endereco(id) NOT NULL,
+nome_completo VARCHAR(64) NOT NULL,
+cpf VARCHAR(15) NOT NULL UNIQUE,
+data_nasc DATE NOT NULL,
+telefone VARCHAR(15),
+formacao VARCHAR(32) NOT NULL,
+experiencia VARCHAR(32) NOT NULL,
+status BOOLEAN NOT NULL
+);
+
+-- CRIANDO A TABELA DE PEDAGOGOS
+CREATE TABLE labschool.pedagogo(
+id SERIAL PRIMARY KEY UNIQUE NOT NULL,
+id_endereco INTEGER REFERENCES labschool.endereco(id) NOT NULL,
+nome_completo VARCHAR(64) NOT NULL,
+cpf VARCHAR(15) NOT NULL UNIQUE,
+data_nasc DATE NOT NULL,
+telefone VARCHAR(15),
+status BOOLEAN NOT NULL
+);
+
+-- CRIANDO A TABELA DE ATENDIMENTOS PEDAGÓGICOS
+CREATE TABLE labschool.atendimentos_pedagogicos(
+id SERIAL PRIMARY KEY UNIQUE NOT NULL,
+id_pedagogo INTEGER REFERENCES labschool.pedagogo(id) NOT NULL,
+id_aluno INTEGER REFERENCES labschool.aluno(id) NOT NULL,
+titulo_atendimento VARCHAR(50) NOT NULL,
+descricao_atendimento VARCHAR(120) NOT NULL,
+categoria_atendimento VARCHAR(50) NOT NULL,
+status_atendimento BOOLEAN NOT NULL
+);
+
+__INSERÇÃO DE DADOS NAS TABELAS
+--INSERÇÃO NA TABELA ENDEREÇO
+INSERT INTO labschool.endereco (cep,logradouro,numero,complemento,bairro,cidade,uf)
+VALUES
+(21082158,'AV SIMOES',			40791,	'APARTAMENTO 12',	'PIRAQUE',				'TUPI',			'RJ'),
+(93881315,'AV MATO GROSSO',		58,		NULL,				'VILA VELHA',			'TUCURUVI',		'PA'),
+(96304867,'AV PRES KENNEDY',	237,	'BECO DA FUMAÇA',	'VILA CONSOLAÇÃO',		'TUBARAO',		'SC'),
+(20115187,'RUA JORGE AMARANTE',	903,	NULL,				'BELA VISTA',			'SAO JOSE',		'SC'),
+(74846021,'RUA DAS PEROLAS',	81,		'APARTAMENTO 60',	'CARANBOLA',			'DOURADOS',		'MS'),
+(88185007,'TRAVESSA JATAIBAH',	1086,	NULL,				'JURERE INTERNACIONAL',	'FLORIANOPOLIS','SC'),
+(51005820,'RUA JULIANA',		121,	'APARTAMENTO 15',	'JARDIM ARAUCARIA',		'CAMPO LARGO',	'RJ'),
+(94097030,'RUA DO PIRAO',		30,		NULL, 				'BOSQUE DAS MANSOES',	'SAO JOSE',		'SC'),
+(66089990,'RUA TUCUVAM',		408,	'CASA 2',			'AREA INDUSTRIAL',		'SALVADOR',		'BA'),
+(65595970,'AV JOANA FRANCA',	54,		NULL,				'CENTRO',				'ANA NERI',		'RS'),
+(68907305,'AV JOAO CARSO',		145,	'ESTRADA VELHA',	'PANTANAL',				'MACAPA',		'AP'),
+(72537121,'QUADRA DC 25',		259,	'BLOCO H-1',		'ASA NORTE',			'BRASILIA',		'DF'),
+(78058204,'RUA CARTAGENA',		180,	'4DH',				'MONTE ALTO',			'CUIABA',		'MT'),
+(90470003,'RUA CEL BORDINI',	263,	'FUNDOS',			'AUXILIADORA',			'PORTO ALEGRE',	'RS'),
+(64022490,'RUA ANTONIO ALONSO',	321,	NULL,				'ALEGRETE',				'PLANALTINA',	'PI');
+
+--INSERÇÃO NA TABELA ALUNO
+INSERT INTO labschool.aluno (id_endereco,nome_completo,cpf,data_nasc,telefone,status_matricula,nota_selecao)
+VALUES
+(1,'ANTONIO AUGUSTO',	'309.923.740-06','10-06-1977',	'48 989991099',	'ATIVO',					9.23),
+(2,'GERVAZIO SILVA',	'772.170.254-27','26-09-1993',	'45 989990999',	'ATENDIMENTO PEDAGOGICO',	7.80),
+(3,'GENI PASQUAL',		'995.491.944-93','11-02-1985',	NULL,			'INATIVO',					6.99),
+(4,'ESTER ALBUERE',		'174.977.252-38','19-12-2003',	'55 999907998',	'ATENDIMENTO PEDAGOGICO',	8.14),
+(5,'NOEVA DE ANDINA',	'348.784.071-58','03-09-1968',	'32 999906999',	'ATIVO',					9.78),
+(6,'LIDOM OLIVEIRA',	'799.951.566-36','18-09-2006',	'45 989399393',	'ATIVO',					10.00),
+(7,'FREDO AUGUSTO',		'410.877.998-30','30-03-1990',	NULL,			'INATIVO',					6.15),
+(8,'NOLINO ANDRADE',	'743.165.364-60','09-08-1997',	'11 922698881',	'ATENDIMENTO PEDAGOGICO',	8.09),
+(9,'RUNEEZ MACRO',		'067.406.083-00','23-05-1979',	NULL,			'INATIVO',					6.44),
+(10,'ANDREA SCHUATZ',	'801.078.995-28','07-09-1971',	'28 999527721',	'ATIVO',					9.05),
+(11,'NORBERTO GUTIE',	'853.671.920-68','26-11-1976',	'55 930265044',	'ATENDIMENTO PEDAGOGICO',	5.28),
+(12,'VANDER ANDRADE',	'415.992.800-51','17-06-1989',	'11 949322700',	'ATENDIMENTO PEDAGOGICO',	7.00),
+(13,'GILDA SAILVENDERA','423.749.230-37','20-01-2001',	'48 999123753',	'ATIVO',					9.83),
+(14,'MANCIO DO AMAL',	'661.114.560-59','07-06-1971',	NULL,			'INATIVO',					8.74),
+(15,'JOICE DOMAL',		'666.114.560-59','07-06-1971',	NULL,			'INATIVO',					5.74);
+
+--INSERÇÃO NA TABELA PROFESSOR
+INSERT INTO labschool.professor (id_endereco,nome_completo,cpf,data_nasc,telefone,formacao,experiencia,status)
+VALUES 
+(1,	'GUILHERME GARCIA',		'877.194.209-26',	'12-04-1980',	'83 3224-8732',		'GRADUACAO COMPLETA',	'FULL-STACK',	TRUE),
+(2,	'MADA BENEDETTO',		'057.947.603-03',	'10-01-1968',	'56 99446-2626',	'MESTRADO',				'BACK-END',		TRUE),
+(3,	'DOMENICO ARR',			'729.940.210-64',	'06-10-1979',	'48 98484-2992',	'DOUTORADO',			'FULL-STACK',	TRUE),
+(4,	'WALDIS PINT',			'098.593.430-12',	'01-01-1998',	'21 98897-1881',	'GRADUACAO INCOMPLETA',	'BACK-END',		FALSE),
+(5,	'JOSE DE OLIVEIRA',		'114.853.949-56',	'13-07-2004',	'86 98826-4638',	'GRADUACAO INCOMPLETA',	'FULL-STACK',	TRUE),
+(6,	'SERGIO ALBUQUERQUE',	'209.194.057-20',	'22-12-1958',	'47 99988-5324',	'GRADUACAO COMPLETA',	'FRONT-END',	TRUE),
+(7,	'GILDO ANTONIO',		'951.740.083-81',	'15-11-1946',	'51 99907-6996',	'MESTRADO',				'FRONT-END',	FALSE),
+(8,	'MARIO OLIVEIRA',		'008.095.110-45',	'23-06-1975',	'48 4227-9903',		'DOUTORADO',			'FULL-STACK',	TRUE),
+(9,	'LEO GUTTENBERG',		'941.472.790-66',	'11-06-1946',	'72 97272-8867',	'GRADUACAO INCOMPLETA',	'FULL-STACK',	FALSE),
+(10,'TANIA LUICARDIA',		'361.447.050-40',	'14-08-1956',	'63 99625-2569',	'GRADUACAO INCOMPLETA',	'FRONT-END',	TRUE),
+(11,'GIONANA CALABRIA',		'566.871.170-68',	'03-03-1933',	'71 98822-1716',	'GRADUACAO INCOMPLETA',	'FULL-STACK',	FALSE),
+(12,'LAURA EIDI DANIELI',	'390.057.740-01',	'27-01-1971',	'49 98567-7070',	'MESTRADO',				'FRONT-END',	TRUE),
+(13,'LEOCADIA DIDAU',		'390.027.740-01',	'27-11-1971',	'49 98827-7070',	'MESTRADO',				'FRONT-END',	TRUE),
+(14,'HERMES CALVAS',		'220.893.400-88',	'05-01-1981',	'83 99688-2136',	'GRADUACAO COMPLETA',	'FRONT-END',	FALSE),
+(15,'EDUARDO AMINOCINE',	'572.986.540-63',	'24-12-2004',	'27 4258-0102',		'GRADUACAO COMPLETA',	'BACK-END',		TRUE);
+
+--INSERÇÃO NA TABELA PEDAGOGOS 
+INSERT INTO labschool.pedagogo (id_endereco,nome_completo,cpf,data_nasc,telefone,status)
+VALUES 
+(1,	'CRISTINA CLARA',	'962.665.290-09',	'11-04-1977',	'42 99943-3773',	TRUE),
+(2,	'EVORO DIRUWAS',	'277.082.070-29',	'09-10-1987',	'49 99877-7776',	FALSE),
+(3,	'ANDREA DVICOSA',	'971.760.460-69',	'17-09-1974',	'48 3025-0001',		TRUE),
+(4,	'FERONA ANDRAW',	'491.875.240-31',	'21-08-1985',	'11 79909-9704',	TRUE),
+(5,	'ENCIO SILVA',		'899.970.210-37',	'06-12-1981',	'91 40635-1933',	FALSE),
+(6,	'CLAUDIA CIORITE',	'822.724.320-77',	'07-09-2000',	'62 53671-8563',	FALSE),
+(7,	'RIVOW TRILL',		'064.822.070-22',	'28-09-2001',	'48 14800-7045',	TRUE),
+(8,	'JUSTIAN GOULART',	'638.454.550-04',	'31-12-1997',	'48 35977-8817',	FALSE),
+(9,	'ROLETY SILVURTH',	'868.149.830-44',	'25-11-1994',	'51 17150-6238',	FALSE),
+(10,'CEIHUNO TLANFID',	'005.197.550-57',	'02-02-2002',	'31 11372-1291',	TRUE),
+(11,'QUIRINO LOMODETO',	'499.373.210-42',	'14-11-1993',	'88 22468-4539',	FALSE),
+(12,'ESTHER DOS PASSOS','676.167.270-85',	'20-06-1979',	'79 50740-7159',	FALSE),
+(13,'CLECIO DINTO',		'446.800.670-63',	'10-06-1999',	'95 69883-7337',	TRUE),
+(14,'THABATA DE BUAS',	'582.914.480-86',	'12-12-2001',	'84 67201-0755',	FALSE),
+(15,'ANA AMABILI',		'653.197.780-90',	'21-09-1966',	'92 39961-7554',	FALSE);
+
+
+
+--INSERÇÃO NA TABELA DE ATENDIMENTOS PEDAGOGICOS
+INSERT INTO labschool.atendimentos_pedagogicos (id_pedagogo,id_aluno,titulo_atendimento,descricao_atendimento,categoria_atendimento,status_atendimento)
+VALUES 
+(4,2,	'MENTORIA CARREIRA',		'ACONSELHAMENTO SOBRE INSERÇÃO NO MERCADO DE TRABALHO', 	'MENTORIA',			TRUE),
+(2,7,	'TIRA DUVIDAS ACADEMICO',	'INSTRUÇÕES  SOBRE RESOLUÇÃO DE PROBLEMAS ACADEMICOS',		'DUVIDAS',			FALSE),
+(4,8,	'MOTIVACIONANDO LABSCHOOL',	'TUTORIA  MOTIVACIONAL APLICADA AOS ALUNOS SOB STRESS',		'MOTIVACIONAL',		TRUE),
+(13,12,	'TIRA DUVIDAS ACADEMICO',	'INSTRUÇÕES  SOBRE RESOLUÇÃO DE PROBLEMAS ACADEMICOS',		'DUVIDAS',			TRUE),
+(10,11,	'COMPORTAMENTAL',			'ATUAÇÃO DIRETA NA RESOLUÇÃO DE PROBLEMAS COMPORTAMENTAIS',	'COMPORTAMENTO',	TRUE),
+(10,2,	'MOTIVACIONANDO LABSCHOOL',	'TUTORIA  MOTIVACIONAL APLICADA AOS ALUNOS SOB STRESS',		'MOTIVACIONAL',		TRUE),
+(1,11,	'COMPORTAMENTAL',			'ATUAÇÃO DIRETA NA RESOLUÇÃO DE PROBLEMAS COMPORTAMENTAIS',	'COMPORTAMENTO',	TRUE),
+(7,8,	'TIRA DUVIDAS ACADEMICO',	'INSTRUÇÕES  SOBRE RESOLUÇÃO DE PROBLEMAS ACADEMICOS',		'DUVIDAS',			TRUE),
+(2,7,	'MOTIVACIONANDO LABSCHOOL',	'ENCONTRO PARA FORTALECIMENTO MOTIVACIONAL',				'MOTIVACIONAL',		FALSE),
+(4,8,	'TIRA DUVIDAS ACADEMICO',	'INSTRUÇÕES  SOBRE RESOLUÇÃO DE PROBLEMAS ACADEMICOS',		'DUVIDAS',			TRUE),
+(10,2,	'TIRA DUVIDAS ACADEMICO',	'INSTRUÇÕES  SOBRE RESOLUÇÃO DE PROBLEMAS ACADEMICOS',		'DUVIDAS',			TRUE),
+(12,3,	'REUNIAO DE CLASSE',		'REUNIAO PRESENCIAL COM OS ALUNOS',							'REUNIAO',			FALSE),
+(15,9,	'REUNIAO DE CLASSE',		'REUNIAO PRESENCIAL COM OS ALUNOS',							'REUNIAO',			FALSE),
+(5,14,	'MENTORIA CARREIRA',		'ACONSELHAMENTO SOBRE INSERÇÃO NO MERCADO DE TRABALHO',		'ACOMPANHAMENTO',	FALSE),
+(13,12,	'MOTIVACIONANDO LABSCHOOL',	'ENCONTRO PARA FORTALECIMENTO MOTIVACIONAL',				'MOTIVACIONAL',		TRUE);
+
+--SELECTS PARA O ALUNO
+SELECT * FROM labschool.aluno;
+SELECT nome_completo, data_nasc, nota_selecao FROM labschool.aluno;
+SELECT nome_completo, cpf FROM labschool.aluno where id <= 3;
+SELECT id,nome_completo,cpf,telefone,nota_selecao FROM labschool.aluno WHERE nota_selecao > 7;
+SELECT id,nome_completo,cpf,telefone,nota_selecao FROM labschool.aluno WHERE nota_selecao <=7;
+
+--SELECTS JOIN PARA O ALUNO
+SELECT al.nome_completo, ap.descricao_atendimento from labschool.aluno al INNER JOIN labschool.atendimentos_pedagogicos ap ON al.id = ap.id_aluno WHERE al.id = 2;
+SELECT al.nome_completo, al.id, e.logradouro, e.bairro FROM labschool.aluno al INNER JOIN labschool.endereco e ON e.id = al.id_endereco WHERE al.id = 2;
+
+
+
+--SELECTS PARA O PEDAGOGO
+SELECT * from labschool.pedagogo;
+SELECT nome_completo, status from c.pedagogo;
+SELECT id, nome_completo from labschool.pedagogo WHERE status = FALSE;
+SELECT id, telefone from labschool.pedagogo WHERE telefone = NULL;
+SELECT id, telefone from labschool.pedagogo WHERE status != FALSE;
+SELECT id,nome_completo,cpf,telefone FROM labschool.pedagogo WHERE status= TRUE;
+
+--SELECTS JOIN PARA O PEDAGOGO
+SELECT * FROM labschool.pedagogo ped INNER JOIN labschool.endereco e ON e.id = ped.id_endereco WHERE e.uf != 'BA';
+SELECT ped.cpf, e.cidade FROM labschool.pedagogo ped INNER JOIN labschool.endereco e ON e.id = ped.id_endereco WHERE e.cidade != 'FLORIANÓPOLIS';
+
+
+--SELECTS PARA OS ATENDIMENTOS PEDAGOGICOS
+SELECT * FROM labschool.atendimentos_pedagogicos;
+SELECT * FROM labschool.atendimentos_pedagogicos WHERE id_aluno = 2;
+SELECT * FROM labschool.atendimentos_pedagogicos WHERE categoria_atendimento ='MENTORIA';
+SELECT * FROM labschool.atendimentos_pedagogicos WHERE status_atendimento= FALSE;
+SELECT * FROM labschool.atendimentos_pedagogicos WHERE categoria_atendimento LIKE'MOTIVACIONAL';
+
+--SELECTS JOIN PARA OS ATENDIMENTOS PEDAGOGICOS
+SELECT * FROM labschool.atendimentos_pedagogicos ap INNER JOIN labschool.aluno a ON a.id = ap.id_aluno;
+SELECT COUNT(*) FROM labschool.atendimentos_pedagogicos ap INNER JOIN labschool.aluno a ON a.id = ap.id_aluno WHERE ap.categoria_atendimento = 'MENTORIA';
+
+
+--SELECTS PARA O PROFESSOR
+SELECT * FROM labschool.professor;
+SELECT id, nome_completo FROM labschool.professor;
+SELECT nome_completo, formacao FROM labschool.professor WHERE status = TRUE;
+SELECT id, nome_completo, status, experiencia FROM labschool.professor WHERE status = FALSE AND experiencia = 'FULL-STACK';
+SELECT id,nome_completo,telefone,formacao,experiencia,status FROM labschool.professor WHERE experiencia ='FRONT-END';
+
+--SELECTS JOIN PARA O PROFESSOR
+SELECT e.* FROM labschool.professor pr INNER JOIN labschool.endereco e ON e.id = pr.id_endereco WHERE pr.nome_completo = 'LAURA EIDI DANIELI';
+SELECT * FROM labschool.professor pr INNER JOIN labschool.endereco e ON e.id = pr.id_endereco WHERE e.uf = 'RS';
+
+
+--SELECTS PARA O ENDEREÇO
+SELECT * from labschool.endereco;
+SELECT cep from labschool.endereco where uf = 'RJ';
+SELECT cep, cidade, complemento from labschool.endereco where uf = 'BA';
+SELECT id, uf from labschool.endereco;
+SELECT logradouro,numero,complemento,cidade,uf FROM labschool.endereco WHERE numero > 600;
